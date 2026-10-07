@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Football Prediction AI</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="container">
+      <header class="hero">
+        <div>
+          <p class="eyebrow">AI-STYLE FOOTBALL ANALYTICS</p>
+          <h1>Football Prediction AI</h1>
+        </div>
+      </header>
+
+      <main>
+        <section class="panel input-panel">
+          <h2>Generate Match Analysis</h2>
+          <form id="predictionForm">
+            <div class="field-row">
+              <label for="competition">USER INPUT 1 = League / Competition</label>
+              <input
+                id="competition"
+                name="competition"
+                type="text"
+                placeholder="Example: Premier League"
+                value="Premier League"
+                required
+              />
+            </div>
+
+            <div class="field-row">
+              <label for="date">USER INPUT 2 = Date of Competition</label>
+              <input
+                id="date"
+                name="date"
+                type="date"
+                required
+              />
+            </div>
+
+            <button type="submit">Run AI Prediction</button>
+          </form>
+        </section>
+
+        <section class="panel summary-panel">
+          <div class="summary-header">
+            <h2>Prediction Summary</h2>
+            <span id="statusBadge" class="status-badge">Ready</span>
+          </div>
+          <div id="summaryCards" class="summary-cards"></div>
+        </section>
+
+        <section class="panel output-panel">
+          <div class="output-header">
+            <h2>Analysis Report</h2>
+          </div>
+          <div id="analysisOutput" class="analysis-output"></div>
+        </section>
+      </main>
+    </div>
+
+    <script src="app.js"></script>
+  </body>
+</html>
