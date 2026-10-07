@@ -3,61 +3,123 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Football Prediction AI</title>
+    <title>Football Prediction AI - Opal Flow</title>
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
-    <div class="container">
-      <header class="hero">
-        <div>
-          <p class="eyebrow">AI-STYLE FOOTBALL ANALYTICS</p>
-          <h1>Football Prediction AI</h1>
+    <div class="shell">
+      <header class="topbar">
+        <div class="brand-block">
+          <div class="brand-mark">AI</div>
+          <div>
+            <p class="eyebrow">Google Opal-inspired workflow</p>
+            <h1>Football Prediction Mini App</h1>
+          </div>
         </div>
+        <button type="button" id="copyReportBtn" class="ghost-btn">Copy report</button>
       </header>
 
-      <main>
-        <section class="panel input-panel">
-          <h2>Generate Match Analysis</h2>
-          <form id="predictionForm">
-            <div class="field-row">
+      <main class="layout">
+        <aside class="sidebar panel">
+          <div class="section-heading">
+            <span class="dot green"></span>
+            <h2>App Flow</h2>
+          </div>
+
+          <ol class="flow-list">
+            <li class="flow-item active">
+              <span class="step-num">1</span>
+              <div>
+                <strong>Input</strong>
+                <p>League and matchday</p>
+              </div>
+            </li>
+            <li class="flow-item">
+              <span class="step-num">2</span>
+              <div>
+                <strong>AI Logic</strong>
+                <p>Prompt rules + ranking engine</p>
+              </div>
+            </li>
+            <li class="flow-item">
+              <span class="step-num">3</span>
+              <div>
+                <strong>Prediction</strong>
+                <p>Output results and verdict</p>
+              </div>
+            </li>
+          </ol>
+
+          <div class="prompt-box">
+            <h3>Prompt Layer</h3>
+            <textarea id="customPrompt" rows="12" aria-label="Football prediction prompt">
+ADVANCED FOOTBALL PREDICTION AI (v7.5H PERFECTION)
+
+ROLE & DIRECTIVES
+You are a GENIUS-LEVEL FOOTBALL ANALYTICS AI capable of analysing ANY league/competition.
+- Predictive Modeling (Poisson, Dixon-Coles, Monte Carlo 500,000+ iterations)
+- League DNA Calibration
+- Team Archetype Classification
+- Head-to-Head Historical Layer
+- Tactical Override Engine
+- Referee & VAR Bias Layer
+- Psychological Momentum Tracking
+- Multi-Market Integration (Home/Away, Draw, Over/Under, BTTS, Correct Score, Double Chance)
+
+PRIMARY OBJECTIVE: Deliver maximally accurate football predictions across ALL major betting markets.
+
+REPORT OUTPUT STRUCTURE
+- Best Home/Away Picks
+- Best Draw Outcomes
+- Best Over/Under Picks
+- Best BTTS Picks
+- Best Combination Bets
+- Best Double Chance Picks
+
+FINAL RESPONSE FORMAT
+Match: [Home Team vs Away Team]
+- 1X2: Home [%], Draw [%], Away [%]
+- Over/Under: Over 1.5 [%], Over 2.5 [%], Under 2.5 [%]
+- BTTS: [%]
+- Best Pick: [Outcome]
+- Final Verdict: [Outcome]
+
+END OF PERFECTION FOOTBALL PREDICTION ANALYSIS
+            </textarea>
+          </div>
+        </aside>
+
+        <section class="main-panel panel">
+          <div class="panel-header">
+            <h2>Create prediction</h2>
+            <span id="statusBadge" class="status-pill">Ready</span>
+          </div>
+
+          <form id="predictionForm" class="input-form">
+            <div class="field-group">
               <label for="competition">USER INPUT 1 = League / Competition</label>
-              <input
-                id="competition"
-                name="competition"
-                type="text"
-                placeholder="Example: Premier League"
-                value="Premier League"
-                required
-              />
+              <input id="competition" type="text" value="Premier League" placeholder="Example: Premier League" required />
             </div>
 
-            <div class="field-row">
+            <div class="field-group">
               <label for="date">USER INPUT 2 = Date of Competition</label>
-              <input
-                id="date"
-                name="date"
-                type="date"
-                required
-              />
+              <input id="date" type="date" required />
             </div>
 
-            <button type="submit">Run AI Prediction</button>
+            <div class="button-row">
+              <button type="submit">Run AI prediction</button>
+              <button type="button" class="secondary-btn" id="useExampleBtn">Use example</button>
+            </div>
           </form>
-        </section>
 
-        <section class="panel summary-panel">
-          <div class="summary-header">
-            <h2>Prediction Summary</h2>
-            <span id="statusBadge" class="status-badge">Ready</span>
-          </div>
-          <div id="summaryCards" class="summary-cards"></div>
-        </section>
+          <div class="summary-grid" id="summaryCards"></div>
 
-        <section class="panel output-panel">
-          <div class="output-header">
-            <h2>Analysis Report</h2>
+          <div class="results-box">
+            <div class="results-header">
+              <h3>Prediction Output</h3>
+            </div>
+            <div id="analysisOutput" class="analysis-output"></div>
           </div>
-          <div id="analysisOutput" class="analysis-output"></div>
         </section>
       </main>
     </div>

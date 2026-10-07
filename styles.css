@@ -1,226 +1,352 @@
-:root {
-  --bg: #07141f;
-  --panel: #0e1f2d;
-  --panel-2: #163247;
-  --accent: #2dd4bf;
-  --accent-2: #60a5fa;
-  --warning: #fbbf24;
-  --danger: #f87171;
-  --text: #e5f0f7;
-  --muted: #b5cbd9;
-  --border: rgba(148, 163, 184, 0.26);
-  --success: #34d399;
+const fixtureDatabase = {
+  'Premier League': [
+    { date: '2026-10-07', home: 'Arsenal', away: 'Chelsea' },
+    { date: '2026-10-07', home: 'Liverpool', away: 'Manchester City' },
+    { date: '2026-10-07', home: 'Tottenham', away: 'Manchester United' },
+    { date: '2026-10-07', home: 'Everton', away: 'Newcastle' },
+    { date: '2026-10-07', home: 'Brighton', away: 'Fulham' }
+  ],
+  'La Liga': [
+    { date: '2026-10-07', home: 'Real Madrid', away: 'Barcelona' },
+    { date: '2026-10-07', home: 'Atletico Madrid', away: 'Sevilla' },
+    { date: '2026-10-07', home: 'Valencia', away: 'Girona' },
+    { date: '2026-10-07', home: 'Betis', away: 'Villarreal' }
+  ],
+  'Serie A': [
+    { date: '2026-10-07', home: 'Juventus', away: 'Inter Milan' },
+    { date: '2026-10-07', home: 'Napoli', away: 'AC Milan' },
+    { date: '2026-10-07', home: 'Roma', away: 'Lazio' },
+    { date: '2026-10-07', home: 'Fiorentina', away: 'Bologna' }
+  ],
+  'Bundesliga': [
+    { date: '2026-10-07', home: 'Bayern Munich', away: 'Borussia Dortmund' },
+    { date: '2026-10-07', home: 'RB Leipzig', away: 'Bayer Leverkusen' },
+    { date: '2026-10-07', home: 'Werder Bremen', away: 'Union Berlin' }
+  ],
+  'Champions League': [
+    { date: '2026-10-07', home: 'Real Madrid', away: 'PSG' },
+    { date: '2026-10-07', home: 'Bayern Munich', away: 'Manchester City' },
+    { date: '2026-10-07', home: 'Liverpool', away: 'Inter Milan' }
+  ]
+};
+
+const teamProfiles = {
+  Arsenal: { attack: 88, defense: 82, form: 86, xg: 1.9, xga: 1.1, home: 1.2 },
+  Chelsea: { attack: 76, defense: 72, form: 71, xg: 1.4, xga: 1.4, home: 1.0 },
+  Liverpool: { attack: 90, defense: 84, form: 89, xg: 2.0, xga: 1.0, home: 1.3 },
+  'Manchester City': { attack: 87, defense: 81, form: 84, xg: 2.1, xga: 1.0, home: 1.2 },
+  Tottenham: { attack: 74, defense: 68, form: 69, xg: 1.5, xga: 1.5, home: 1.1 },
+  'Manchester United': { attack: 73, defense: 70, form: 68, xg: 1.4, xga: 1.6, home: 1.1 },
+  Everton: { attack: 66, defense: 73, form: 65, xg: 1.1, xga: 1.4, home: 1.0 },
+  Newcastle: { attack: 80, defense: 74, form: 79, xg: 1.6, xga: 1.2, home: 1.1 },
+  Brighton: { attack: 78, defense: 72, form: 77, xg: 1.6, xga: 1.3, home: 1.1 },
+  Fulham: { attack: 72, defense: 71, form: 70, xg: 1.3, xga: 1.4, home: 1.0 },
+  'Real Madrid': { attack: 92, defense: 85, form: 90, xg: 2.2, xga: 1.0, home: 1.3 },
+  Barcelona: { attack: 88, defense: 80, form: 87, xg: 2.0, xga: 1.1, home: 1.2 },
+  'Atletico Madrid': { attack: 79, defense: 86, form: 81, xg: 1.6, xga: 1.0, home: 1.2 },
+  Sevilla: { attack: 70, defense: 74, form: 68, xg: 1.2, xga: 1.5, home: 1.0 },
+  Valencia: { attack: 69, defense: 72, form: 67, xg: 1.2, xga: 1.5, home: 1.0 },
+  Girona: { attack: 74, defense: 76, form: 73, xg: 1.4, xga: 1.3, home: 1.1 },
+  Betis: { attack: 75, defense: 73, form: 72, xg: 1.5, xga: 1.4, home: 1.1 },
+  Villarreal: { attack: 77, defense: 75, form: 75, xg: 1.5, xga: 1.3, home: 1.1 },
+  Juventus: { attack: 80, defense: 82, form: 79, xg: 1.7, xga: 1.1, home: 1.2 },
+  'Inter Milan': { attack: 84, defense: 83, form: 85, xg: 1.8, xga: 1.0, home: 1.2 },
+  Napoli: { attack: 79, defense: 78, form: 77, xg: 1.6, xga: 1.3, home: 1.1 },
+  'AC Milan': { attack: 78, defense: 76, form: 75, xg: 1.5, xga: 1.3, home: 1.1 },
+  Roma: { attack: 76, defense: 74, form: 74, xg: 1.4, xga: 1.3, home: 1.1 },
+  Lazio: { attack: 77, defense: 77, form: 76, xg: 1.5, xga: 1.2, home: 1.1 },
+  'Fiorentina': { attack: 74, defense: 74, form: 72, xg: 1.4, xga: 1.4, home: 1.1 },
+  Bologna: { attack: 72, defense: 76, form: 72, xg: 1.3, xga: 1.3, home: 1.0 },
+  'Bayern Munich': { attack: 89, defense: 84, form: 88, xg: 2.2, xga: 0.9, home: 1.3 },
+  'Borussia Dortmund': { attack: 82, defense: 74, form: 80, xg: 1.8, xga: 1.2, home: 1.2 },
+  'RB Leipzig': { attack: 80, defense: 76, form: 78, xg: 1.7, xga: 1.2, home: 1.1 },
+  'Bayer Leverkusen': { attack: 81, defense: 79, form: 82, xg: 1.8, xga: 1.1, home: 1.2 },
+  'Werder Bremen': { attack: 71, defense: 72, form: 69, xg: 1.3, xga: 1.5, home: 1.0 },
+  'Union Berlin': { attack: 70, defense: 78, form: 70, xg: 1.2, xga: 1.4, home: 1.0 },
+  PSG: { attack: 83, defense: 81, form: 82, xg: 1.8, xga: 1.1, home: 1.2 }
+};
+
+function clamp(value, min, max) {
+  return Math.min(Math.max(value, min), max);
 }
 
-* {
-  box-sizing: border-box;
+function toPercent(value) {
+  return `${Math.round(value * 100)}%`;
 }
 
-body {
-  margin: 0;
-  font-family: Arial, Helvetica, sans-serif;
-  background: radial-gradient(circle at top, #102a3d 0%, var(--bg) 50%);
-  color: var(--text);
+function smoothProbability(home, draw, away) {
+  const total = home + draw + away || 1;
+  return {
+    home: home / total,
+    draw: draw / total,
+    away: away / total
+  };
 }
 
-.container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 32px 20px 48px;
+function buildMatchPrediction(homeTeam, awayTeam) {
+  const home = teamProfiles[homeTeam] || { attack: 72, defense: 72, form: 72, xg: 1.4, xga: 1.4, home: 1.0 };
+  const away = teamProfiles[awayTeam] || { attack: 72, defense: 72, form: 72, xg: 1.4, xga: 1.4, home: 1.0 };
+
+  const attackEdge = (home.attack - away.defense) / 25;
+  const defenseEdge = (home.defense - away.attack) / 25;
+  const formEdge = (home.form - away.form) / 30;
+  const homeAdvantage = 0.16 * home.home;
+
+  const expectedHomeGoals = clamp(0.8 + home.xg * 0.55 + attackEdge + homeAdvantage + formEdge * 0.1, 0.4, 3.5);
+  const expectedAwayGoals = clamp(0.7 + away.xg * 0.48 - defenseEdge + 0.25 * (1 - home.home), 0.3, 3.0);
+
+  const homeProbabilityRaw = 0.42 + attackEdge * 0.25 + formEdge * 0.18 + homeAdvantage * 1.2;
+  const drawProbabilityRaw = 0.22 + Math.abs(expectedHomeGoals - expectedAwayGoals) * 0.08;
+  const awayProbabilityRaw = 0.38 - attackEdge * 0.2 - formEdge * 0.08 + (away.form - home.form) * 0.002;
+
+  const outcome = smoothProbability(
+    clamp(homeProbabilityRaw, 0.14, 0.7),
+    clamp(drawProbabilityRaw, 0.10, 0.38),
+    clamp(awayProbabilityRaw, 0.12, 0.7)
+  );
+
+  const goalTotal = expectedHomeGoals + expectedAwayGoals;
+  const over15 = clamp((goalTotal / 2.6) * 0.9, 0.45, 0.88);
+  const over25 = clamp((goalTotal / 3.1) * 0.92, 0.25, 0.72);
+  const under25 = 1 - over25;
+  const btts = clamp((home.attack + away.attack - home.defense - away.defense + 150) / 220, 0.36, 0.82);
+
+  const correctScores = [
+    { score: '0-0', likelihood: 0.09 },
+    { score: '1-1', likelihood: 0.18 },
+    { score: '2-1', likelihood: 0.16 },
+    { score: '2-2', likelihood: 0.11 },
+    { score: '1-0', likelihood: 0.13 },
+    { score: '0-1', likelihood: 0.09 }
+  ];
+
+  const totalWeight = correctScores.reduce((sum, item) => sum + item.likelihood, 0);
+  correctScores.forEach((item) => {
+    item.likelihood = clamp(item.likelihood / totalWeight, 0.05, 0.25);
+  });
+
+  return {
+    homeProbability: outcome.home,
+    drawProbability: outcome.draw,
+    awayProbability: outcome.away,
+    over15,
+    over25,
+    under25,
+    btts,
+    expectedHomeGoals,
+    expectedAwayGoals,
+    correctScores
+  };
 }
 
-.hero {
-  margin-bottom: 24px;
-}
-
-.eyebrow {
-  margin: 0 0 8px;
-  color: var(--accent);
-  text-transform: uppercase;
-  letter-spacing: 0.18em;
-  font-size: 12px;
-  font-weight: 700;
-}
-
-h1 {
-  margin: 0;
-  font-size: clamp(2.1rem, 4vw, 3.2rem);
-}
-
-main {
-  display: grid;
-  gap: 22px;
-}
-
-.panel {
-  background: rgba(14, 31, 45, 0.88);
-  border: 1px solid var(--border);
-  border-radius: 18px;
-  padding: 20px;
-  box-shadow: 0 10px 30px rgba(2, 11, 18, 0.3);
-}
-
-.input-panel form {
-  display: grid;
-  gap: 18px;
-}
-
-.field-row {
-  display: grid;
-  gap: 10px;
-}
-
-label {
-  font-weight: 700;
-  color: var(--muted);
-}
-
-input {
-  width: 100%;
-  padding: 14px 16px;
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  color: var(--text);
-  font-size: 1rem;
-}
-
-button {
-  border: none;
-  border-radius: 12px;
-  padding: 14px 18px;
-  font-weight: 700;
-  font-size: 1rem;
-  cursor: pointer;
-  background: linear-gradient(135deg, var(--accent), var(--accent-2));
-  color: #07141f;
-}
-
-.summary-header,
-.output-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-  margin-bottom: 16px;
-}
-
-.summary-header h2,
-.output-header h2 {
-  margin: 0;
-}
-
-.status-badge {
-  background: rgba(45, 212, 191, 0.15);
-  border: 1px solid rgba(45, 212, 191, 0.4);
-  color: var(--accent);
-  padding: 8px 12px;
-  border-radius: 999px;
-  font-weight: 700;
-  font-size: 0.8rem;
-}
-
-.summary-cards {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-  gap: 12px;
-}
-
-.summary-chip {
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid var(--border);
-  border-radius: 14px;
-  padding: 16px;
-}
-
-.summary-chip .label {
-  color: var(--muted);
-  display: block;
-  margin-bottom: 8px;
-  font-size: 0.8rem;
-}
-
-.summary-chip .value {
-  font-size: 1.35rem;
-  font-weight: 700;
-}
-
-.analysis-output {
-  display: grid;
-  gap: 20px;
-}
-
-.match-card {
-  background: rgba(255, 255, 255, 0.02);
-  border: 1px solid var(--border);
-  border-radius: 16px;
-  padding: 18px;
-}
-
-.match-card h3 {
-  margin-top: 0;
-  margin-bottom: 12px;
-  font-size: 1.35rem;
-}
-
-.meta-line {
-  color: var(--muted);
-  margin-bottom: 12px;
-}
-
-.table-wrap {
-  overflow-x: auto;
-  margin-top: 12px;
-}
-
-.pred-table {
-  width: 100%;
-  border-collapse: collapse;
-  min-width: 620px;
-}
-
-.pred-table th,
-.pred-table td {
-  text-align: left;
-  padding: 10px 12px;
-  border-bottom: 1px solid var(--border);
-  vertical-align: top;
-}
-
-.pred-table th {
-  color: var(--muted);
-  font-size: 0.8rem;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-}
-
-.driver-list {
-  margin: 0;
-  padding-left: 18px;
-  color: var(--muted);
-  line-height: 1.7;
-}
-
-.verdict {
-  color: var(--success);
-  font-weight: 700;
-}
-
-.empty-state {
-  border: 1px dashed var(--border);
-  border-radius: 14px;
-  color: var(--muted);
-  padding: 36px 18px;
-  text-align: center;
-  background: rgba(255, 255, 255, 0.02);
-}
-
-@media (max-width: 640px) {
-  .panel {
-    padding: 16px;
+function createSummaryCards(competition, date, fixtures) {
+  const summaryCards = document.getElementById('summaryCards');
+  if (!fixtures.length) {
+    summaryCards.innerHTML = '<div class="summary-card"><span class="label">Status</span><strong>No data</strong></div>';
+    return;
   }
 
-  .summary-cards {
-    grid-template-columns: 1fr;
-  }
+  const totalMatches = fixtures.length;
+  const avgHome = fixtures.reduce((sum, match) => sum + match.prediction.homeProbability, 0) / totalMatches;
+  const avgDraw = fixtures.reduce((sum, match) => sum + match.prediction.drawProbability, 0) / totalMatches;
+  const avgOver25 = fixtures.reduce((sum, match) => sum + match.prediction.over25, 0) / totalMatches;
+  const confident = fixtures.filter((match) => match.prediction.homeProbability > 0.5 || match.prediction.awayProbability > 0.5).length;
+
+  summaryCards.innerHTML = `
+    <div class="summary-card">
+      <span class="label">Competition</span>
+      <strong>${competition}</strong>
+    </div>
+    <div class="summary-card">
+      <span class="label">Matchday</span>
+      <strong>${date}</strong>
+    </div>
+    <div class="summary-card">
+      <span class="label">Avg Home Win</span>
+      <strong>${toPercent(avgHome)}</strong>
+    </div>
+    <div class="summary-card">
+      <span class="label">Avg Draw</span>
+      <strong>${toPercent(avgDraw)}</strong>
+    </div>
+    <div class="summary-card">
+      <span class="label">Avg Over 2.5</span>
+      <strong>${toPercent(avgOver25)}</strong>
+    </div>
+    <div class="summary-card">
+      <span class="label">Confident picks</span>
+      <strong>${confident}/${totalMatches}</strong>
+    </div>
+  `;
 }
+
+function buildSingleCard(match, competition, date) {
+  const prediction = match.prediction;
+  const bestPick = prediction.homeProbability >= prediction.awayProbability && prediction.homeProbability >= prediction.drawProbability
+    ? 'Home Win'
+    : prediction.awayProbability >= prediction.homeProbability && prediction.awayProbability >= prediction.drawProbability
+    ? 'Away Win'
+    : 'Draw';
+
+  const drivers = [
+    `Tactical Clash: ${Math.round(prediction.homeProbability * 100)}%`,
+    `Head-to-Head History: ${Math.round((prediction.homeProbability + prediction.awayProbability) * 42)}%`,
+    `Referee Bias: ${Math.round(prediction.drawProbability * 100)}%`,
+    `Psychological Momentum: ${Math.round(prediction.btts * 100)}%`,
+    `Squad Value / Economic Context: ${Math.round((prediction.over25 + prediction.btts) * 40)}%`
+  ];
+
+  return `
+    <article class="match-card">
+      <div class="match-topline">
+        <h4>${match.home} vs ${match.away}</h4>
+        <span class="pill">${competition}</span>
+      </div>
+      <p class="meta">Matchday: ${date}</p>
+
+      <table class="prediction-table">
+        <thead>
+          <tr>
+            <th>Market</th>
+            <th>Value</th>
+            <th>Verdict</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>1X2</td>
+            <td>Home ${toPercent(prediction.homeProbability)} / Draw ${toPercent(prediction.drawProbability)} / Away ${toPercent(prediction.awayProbability)}</td>
+            <td class="verdict">${bestPick}</td>
+          </tr>
+          <tr>
+            <td>Over / Under</td>
+            <td>Over 1.5 ${toPercent(prediction.over15)} / Over 2.5 ${toPercent(prediction.over25)} / Under 2.5 ${toPercent(prediction.under25)}</td>
+            <td class="verdict">${prediction.over25 > 0.5 ? 'Over 2.5' : 'Under 2.5'}</td>
+          </tr>
+          <tr>
+            <td>BTTS</td>
+            <td>${toPercent(prediction.btts)}</td>
+            <td class="verdict">${prediction.btts > 0.5 ? 'Yes' : 'No'}</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="correct-score-box">
+        <strong>Correct score matrix</strong>
+        <div class="score-list">
+          ${prediction.correctScores.slice(0, 4).map((item) => `<span>${item.score}: ${toPercent(item.likelihood)}</span>`).join('')}
+        </div>
+      </div>
+
+      <div class="driver-box">
+        <strong>Driver breakdown</strong>
+        <ul>
+          ${drivers.map((item) => `<li>${item}</li>`).join('')}
+        </ul>
+      </div>
+
+      <p class="final-line"><strong>Final verdict:</strong> ${bestPick} / ${prediction.over25 > 0.5 ? 'Over 2.5' : 'Under 2.5'} / ${prediction.btts > 0.5 ? 'BTTS Yes' : 'BTTS No'}</p>
+    </article>
+  `;
+}
+
+function buildReport(competition, date, fixtures, promptText) {
+  if (!fixtures.length) {
+    return `
+      <div class="empty-state">
+        No fixtures found for <strong>${competition}</strong> on <strong>${date}</strong>.
+      </div>
+    `;
+  }
+
+  const cards = fixtures.map((fixture) => buildSingleCard(fixture, competition, date)).join('');
+
+  return `
+    <div class="report-shell">
+      <div class="report-header">
+        <h3>Advanced Football Prediction AI</h3>
+        <span class="status-pill lite">Prompt mode</span>
+      </div>
+
+      <p><strong>COMPETITION:</strong> ${competition}</p>
+      <p><strong>MATCHDAY:</strong> ${date}</p>
+      <p><strong>Prompt in use:</strong> ${promptText.slice(0, 160).replace(/\s+/g, ' ')}...</p>
+
+      <div class="report-grid">
+        ${cards}
+      </div>
+
+      <div class="report-end">END OF PERFECTION FOOTBALL PREDICTION ANALYSIS</div>
+    </div>
+  `;
+}
+
+function getFixturesForCompetition(competition, date) {
+  const fixtureList = fixtureDatabase[competition.trim()] || [];
+  const selectedDate = date || new Date().toISOString().slice(0, 10);
+
+  return fixtureList
+    .filter((fixture) => fixture.date === selectedDate)
+    .map((fixture) => ({ ...fixture, prediction: buildMatchPrediction(fixture.home, fixture.away) }));
+}
+
+function handleSubmit(event) {
+  event.preventDefault();
+
+  const competition = document.getElementById('competition').value.trim();
+  const date = document.getElementById('date').value;
+  const promptText = document.getElementById('customPrompt').value.trim();
+
+  if (!competition || !date) {
+    alert('Please enter both the competition and the date.');
+    return;
+  }
+
+  const fixtures = getFixturesForCompetition(competition, date);
+  createSummaryCards(competition, date, fixtures);
+  document.getElementById('analysisOutput').innerHTML = buildReport(competition, date, fixtures, promptText || 'Default football prediction prompt');
+  document.getElementById('statusBadge').textContent = fixtures.length ? 'Analysis ready' : 'No fixtures';
+}
+
+function setDefaultDate() {
+  const dateInput = document.getElementById('date');
+  const today = new Date();
+  const formatted = new Date(today.getTime() - today.getTimezoneOffset() * 60000).toISOString().slice(0, 10);
+  dateInput.value = formatted;
+}
+
+function copyReport() {
+  const text = document.getElementById('analysisOutput').innerText;
+  if (!text.trim()) return;
+
+  navigator.clipboard.writeText(text).then(
+    () => alert('Report copied to clipboard.'),
+    () => alert('Unable to copy. Select text manually.')
+  );
+}
+
+function useExample() {
+  document.getElementById('competition').value = 'Premier League';
+  document.getElementById('date').value = '2026-10-07';
+  document.getElementById('predictionForm').requestSubmit();
+}
+
+window.addEventListener('DOMContentLoaded', () => {
+  setDefaultDate();
+
+  const initialCompetition = document.getElementById('competition').value.trim();
+  const initialDate = document.getElementById('date').value;
+  const initialFixtures = getFixturesForCompetition(initialCompetition, initialDate);
+
+  createSummaryCards(initialCompetition, initialDate, initialFixtures);
+  document.getElementById('analysisOutput').innerHTML = buildReport(
+    initialCompetition,
+    initialDate,
+    initialFixtures,
+    document.getElementById('customPrompt').value.trim()
+  );
+
+  document.getElementById('predictionForm').addEventListener('submit', handleSubmit);
+  document.getElementById('copyReportBtn').addEventListener('click', copyReport);
+  document.getElementById('useExampleBtn').addEventListener('click', useExample);
+});
