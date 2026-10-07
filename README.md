@@ -26,7 +26,8 @@ body {
 
 button,
 input,
-textarea {
+textarea,
+select {
   font: inherit;
 }
 
@@ -174,13 +175,18 @@ h1 {
   margin: 0 0 12px;
 }
 
-textarea {
+textarea,
+.select-input,
+input {
   width: 100%;
   border: 1px solid var(--stroke);
   border-radius: 12px;
-  background: rgba(255, 255, 255, 0.02);
+  background: rgba(255, 255, 255, 0.04);
   color: var(--text);
   padding: 12px 14px;
+}
+
+textarea {
   resize: vertical;
   min-height: 220px;
 }
@@ -238,14 +244,6 @@ label {
   color: var(--muted);
   font-weight: 700;
   font-size: 0.92rem;
-}
-
-input {
-  border: 1px solid var(--stroke);
-  border-radius: 12px;
-  background: rgba(255, 255, 255, 0.04);
-  padding: 14px 16px;
-  color: var(--text);
 }
 
 .button-row {
@@ -450,6 +448,26 @@ button:hover {
   font-weight: 700;
   padding-top: 12px;
   border-top: 1px solid var(--stroke);
+}
+
+.ai-response-block {
+  border: 1px solid rgba(98, 168, 255, 0.28);
+  background: rgba(98, 168, 255, 0.05);
+  border-radius: 18px;
+  padding: 18px;
+}
+
+.ai-response-block h4 {
+  margin-top: 0;
+  margin-bottom: 12px;
+}
+
+.ai-response-block pre {
+  white-space: pre-wrap;
+  word-break: break-word;
+  margin: 0;
+  line-height: 1.65;
+  color: var(--text);
 }
 
 @media (max-width: 980px) {

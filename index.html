@@ -147,6 +147,23 @@ TEAMS: [FULL FIXTURE LIST FOR SELECTED LEAGUE]</textarea>
           <form id="predictionForm" class="input-form">
             <div class="field-row">
               <div class="field-group">
+                <label for="provider">AI Provider</label>
+                <select id="provider" class="select-input">
+                  <option value="gemini">Google Gemini</option>
+                  <option value="local">Local model (fallback)</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="field-row">
+              <div class="field-group">
+                <label for="apiKey">API Key</label>
+                <input id="apiKey" type="password" placeholder="Enter Google Gemini API key (optional)" />
+              </div>
+            </div>
+
+            <div class="field-row">
+              <div class="field-group">
                 <label for="competition">USER INPUT 1 = League / Competition</label>
                 <input id="competition" type="text" value="Premier League" placeholder="Example: Premier League" required />
               </div>
