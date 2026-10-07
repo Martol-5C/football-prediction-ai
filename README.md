@@ -75,6 +75,12 @@ h1 {
   font-size: clamp(2rem, 3vw, 3rem);
 }
 
+.topbar-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
 .layout {
   display: grid;
   grid-template-columns: 360px 1fr;
@@ -216,6 +222,11 @@ textarea {
   display: grid;
   gap: 18px;
   margin-bottom: 20px;
+}
+
+.field-row {
+  display: grid;
+  gap: 12px;
 }
 
 .field-group {
@@ -429,6 +440,10 @@ button:hover {
   border-radius: 16px;
   text-align: center;
   color: var(--muted);
+}
+
+.report-table {
+  width: 100%;
 }
 
 .report-end {

@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Football Prediction AI - Opal Flow</title>
+    <title>Football Prediction AI - Opal Workflow</title>
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
@@ -16,7 +16,10 @@
             <h1>Football Prediction Mini App</h1>
           </div>
         </div>
-        <button type="button" id="copyReportBtn" class="ghost-btn">Copy report</button>
+        <div class="topbar-actions">
+          <button type="button" id="useExampleBtn" class="secondary-btn">Use example</button>
+          <button type="button" id="copyReportBtn" class="ghost-btn">Copy report</button>
+        </div>
       </header>
 
       <main class="layout">
@@ -31,61 +34,107 @@
               <span class="step-num">1</span>
               <div>
                 <strong>Input</strong>
-                <p>League and matchday</p>
+                <p>League, date, prompt</p>
               </div>
             </li>
             <li class="flow-item">
               <span class="step-num">2</span>
               <div>
                 <strong>AI Logic</strong>
-                <p>Prompt rules + ranking engine</p>
+                <p>Prompt rules + team model</p>
               </div>
             </li>
             <li class="flow-item">
               <span class="step-num">3</span>
               <div>
                 <strong>Prediction</strong>
-                <p>Output results and verdict</p>
+                <p>Results, verdicts, summary</p>
               </div>
             </li>
           </ol>
 
           <div class="prompt-box">
             <h3>Prompt Layer</h3>
-            <textarea id="customPrompt" rows="12" aria-label="Football prediction prompt">
-ADVANCED FOOTBALL PREDICTION AI (v7.5H PERFECTION)
+            <textarea id="customPrompt" rows="12" aria-label="Football prediction prompt">ADVANCED FOOTBALL PREDICTION AI (v7.5H PERFECTION – Ultra-Adaptive Human-Aware Forecasting, Bias-Corrected, Full Online Integration)
 
 ROLE & DIRECTIVES
-You are a GENIUS-LEVEL FOOTBALL ANALYTICS AI capable of analysing ANY league/competition.
+You are a GENIUS-LEVEL FOOTBALL ANALYTICS AI capable of analysing ANY league/competition:
 - Predictive Modeling (Poisson, Dixon-Coles, Monte Carlo 500,000+ iterations)
-- League DNA Calibration
-- Team Archetype Classification
-- Head-to-Head Historical Layer
-- Tactical Override Engine
-- Referee & VAR Bias Layer
-- Psychological Momentum Tracking
-- Multi-Market Integration (Home/Away, Draw, Over/Under, BTTS, Correct Score, Double Chance)
+- League DNA Calibration (scoring/draw tendencies per competition)
+- Team Archetype Classification (attacking DNA, defensive resilience, transitional volatility)
+- Head-to-Head Historical Layer (multi-season fixture averages)
+- Tactical Override Engine (VIP Analysis + WhoScored tactical notes)
+- Fixture Context Layer (derbies, relegation battles, mid-table clashes)
+- Bias-Correction Reinforcement (form vs reputation balancing)
+- Explainable AI Drivers (SHAP/LIME interpretability with driver breakdowns)
+- Multi-Market Integration (Home/Away, Draw, Over/Under, BTTS, Correct Score, Combination Bets, Double Chance)
+- Referee & VAR Bias Layer (historical tendencies factored into volatility index)
+- Weather & Pitch Conditions (rain, heat, altitude, turf effects)
+- Psychological Momentum Tracking (winning/losing streaks weighted)
+- Economic Context Layer (transfer spending, wage bills, financial stress)
+- Cross-League Benchmarking (calibration against similar archetype fixtures)
+- Reinforcement Learning (continuous recalibration after each round)
 
-PRIMARY OBJECTIVE: Deliver maximally accurate football predictions across ALL major betting markets.
+PRIMARY OBJECTIVE: Deliver maximally accurate football predictions across ALL major betting markets, independent of sentiment or odds.
 
-REPORT OUTPUT STRUCTURE
-- Best Home/Away Picks
-- Best Draw Outcomes
-- Best Over/Under Picks
-- Best BTTS Picks
-- Best Combination Bets
-- Best Double Chance Picks
+REPORT OUTPUT STRUCTURE (TABULATED)
+Table 1: Best Home/Away Picks
+| Match | Home Win % | Away Win % | Best Pick | Drivers |
 
-FINAL RESPONSE FORMAT
+Table 2: Best Draw Outcomes
+| Match | Draw Probability | Likely Scores | Drivers |
+
+Table 3: Best Over/Under Picks
+| Match | Over 1.5 % | Over 2.5 % | Best Pick | Drivers |
+
+Table 4: Best BTTS Picks
+| Match | BTTS % | Verdict | Drivers |
+
+Table 5: Best Combination Bets
+| Match | BTTS % | Over 2.5 % | Combo Verdict | Drivers |
+
+Table 6: Best Double Chance Picks
+| Match | 1X % | X2 % | 12 % | Best Pick | Drivers |
+
+PER-MATCH ANALYSIS TEMPLATE
 Match: [Home Team vs Away Team]
+Competition: [League]
+Matchday: [Round]
+
+Executive Summary:
+- Data Quality Score: [XX]
+- Confidence Rating: [XX]
+- Expected Goals: lambda_H = [X], lambda_A = [X], Combined = [X]
+
+Prediction Tables:
 - 1X2: Home [%], Draw [%], Away [%]
 - Over/Under: Over 1.5 [%], Over 2.5 [%], Under 2.5 [%]
 - BTTS: [%]
-- Best Pick: [Outcome]
-- Final Verdict: [Outcome]
+- Correct Score Matrix: [0-0, 1-1, 2-1, 2-2 likelihoods]
+- Double Chance: 1X [%], X2 [%], 12 [%]
+
+Driver Breakdown:
+- Tactical Clash: [XX%]
+- Head-to-Head History: [XX%]
+- Referee Bias: [XX%]
+- Weather/Pitch Conditions: [XX%]
+- Squad Value/Economic Context: [XX%]
+- Psychological Momentum: [XX%]
+
+Final Verdict:
+- Best Home/Away Pick: [Outcome]
+- Best Draw Pick: [Outcome]
+- Best Over/Under Pick: [Outcome]
+- Best BTTS Pick: [Outcome]
+- Best Combination Bet: [Outcome]
+- Best Double Chance Pick: [Outcome]
 
 END OF PERFECTION FOOTBALL PREDICTION ANALYSIS
-            </textarea>
+
+INPUT LINE (League-Wide)
+COMPETITION: [INSERT LEAGUE/COMPETITION]
+MATCHDAY: [INSERT ROUND/WEEK]
+TEAMS: [FULL FIXTURE LIST FOR SELECTED LEAGUE]</textarea>
           </div>
         </aside>
 
@@ -96,19 +145,23 @@ END OF PERFECTION FOOTBALL PREDICTION ANALYSIS
           </div>
 
           <form id="predictionForm" class="input-form">
-            <div class="field-group">
-              <label for="competition">USER INPUT 1 = League / Competition</label>
-              <input id="competition" type="text" value="Premier League" placeholder="Example: Premier League" required />
+            <div class="field-row">
+              <div class="field-group">
+                <label for="competition">USER INPUT 1 = League / Competition</label>
+                <input id="competition" type="text" value="Premier League" placeholder="Example: Premier League" required />
+              </div>
             </div>
 
-            <div class="field-group">
-              <label for="date">USER INPUT 2 = Date of Competition</label>
-              <input id="date" type="date" required />
+            <div class="field-row">
+              <div class="field-group">
+                <label for="date">USER INPUT 2 = Date of Competition</label>
+                <input id="date" type="date" required />
+              </div>
             </div>
 
             <div class="button-row">
               <button type="submit">Run AI prediction</button>
-              <button type="button" class="secondary-btn" id="useExampleBtn">Use example</button>
+              <button type="button" id="resetBtn" class="secondary-btn">Reset</button>
             </div>
           </form>
 

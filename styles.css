@@ -142,7 +142,12 @@ function buildMatchPrediction(homeTeam, awayTeam) {
 function createSummaryCards(competition, date, fixtures) {
   const summaryCards = document.getElementById('summaryCards');
   if (!fixtures.length) {
-    summaryCards.innerHTML = '<div class="summary-card"><span class="label">Status</span><strong>No data</strong></div>';
+    summaryCards.innerHTML = `
+      <div class="summary-card">
+        <span class="label">Status</span>
+        <strong>No data</strong>
+      </div>
+    `;
     return;
   }
 
@@ -180,7 +185,7 @@ function createSummaryCards(competition, date, fixtures) {
   `;
 }
 
-function buildSingleCard(match, competition, date) {
+function buildSingleMatchCard(match, competition, date) {
   const prediction = match.prediction;
   const bestPick = prediction.homeProbability >= prediction.awayProbability && prediction.homeProbability >= prediction.drawProbability
     ? 'Home Win'
@@ -228,6 +233,11 @@ function buildSingleCard(match, competition, date) {
             <td>${toPercent(prediction.btts)}</td>
             <td class="verdict">${prediction.btts > 0.5 ? 'Yes' : 'No'}</td>
           </tr>
+          <tr>
+            <td>Double Chance</td>
+            <td>1X ${toPercent(prediction.homeProbability + prediction.drawProbability - prediction.homeProbability * prediction.drawProbability)} / X2 ${toPercent(prediction.drawProbability + prediction.awayProbability - prediction.drawProbability * prediction.awayProbability)}</td>
+            <td class="verdict">${bestPick}</td>
+          </tr>
         </tbody>
       </table>
 
@@ -254,12 +264,33 @@ function buildReport(competition, date, fixtures, promptText) {
   if (!fixtures.length) {
     return `
       <div class="empty-state">
-        No fixtures found for <strong>${competition}</strong> on <strong>${date}</strong>.
+        No fixtures found for <strong>${competition}</strong> on <strong>${date}</strong>.<br />
+        Try a known league such as Premier League, La Liga, Serie A, Bundesliga, or Champions League.
       </div>
     `;
   }
 
-  const cards = fixtures.map((fixture) => buildSingleCard(fixture, competition, date)).join('');
+  const reportRows = fixtures.map((match) => {
+    const p = match.prediction;
+    const bestPick = p.homeProbability >= p.awayProbability && p.homeProbability >= p.drawProbability
+      ? 'Home Win'
+      : p.awayProbability >= p.homeProbability && p.awayProbability >= p.drawProbability
+      ? 'Away Win'
+      : 'Draw';
+
+    return `
+      <tr>
+        <td>${match.home} vs ${match.away}</td>
+        <td>${toPercent(p.homeProbability)}</td>
+        <td>${toPercent(p.awayProbability)}</td>
+        <td>${bestPick}</td>
+        <td>Tactical Clash / Form / Momentum</td>
+      </tr>
+    `;
+  }).join('');
+
+  const cards = fixtures.map((fixture) => buildSingleMatchCard(fixture, competition, date)).join('');
+  const promptPreview = promptText ? promptText.slice(0, 180).replace(/\s+/g, ' ') : 'Default football prediction prompt';
 
   return `
     <div class="report-shell">
@@ -270,20 +301,57 @@ function buildReport(competition, date, fixtures, promptText) {
 
       <p><strong>COMPETITION:</strong> ${competition}</p>
       <p><strong>MATCHDAY:</strong> ${date}</p>
-      <p><strong>Prompt in use:</strong> ${promptText.slice(0, 160).replace(/\s+/g, ' ')}...</p>
+      <p><strong>Prompt in use:</strong> ${promptPreview}...</p>
 
-      <div class="report-grid">
-        ${cards}
-      </div>
+      <h4>Table 1: Best Home/Away Picks</h4>
+      <table class="prediction-table report-table">
+        <thead>
+          <tr>
+            <th>Match</th>
+            <th>Home Win %</th>
+            <th>Away Win %</th>
+            <th>Best Pick</th>
+            <th>Drivers</th>
+          </tr>
+        </thead>
+        <tbody>${reportRows}</tbody>
+      </table>
 
+      <h4>Table 2: Best Draw Outcomes</h4>
+      <table class="prediction-table report-table">
+        <thead>
+          <tr>
+            <th>Match</th>
+            <th>Draw Probability</th>
+            <th>Likely Scores</th>
+            <th>Drivers</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${fixtures.map((fixture) => {
+            const p = fixture.prediction;
+            return `
+              <tr>
+                <td>${fixture.home} vs ${fixture.away}</td>
+                <td>${toPercent(p.drawProbability)}</td>
+                <td>1-1 / 2-1 / 2-2</td>
+                <td>Pressure / Variance / Form</td>
+              </tr>
+            `;
+          }).join('')}
+        </tbody>
+      </table>
+
+      <div class="report-grid">${cards}</div>
       <div class="report-end">END OF PERFECTION FOOTBALL PREDICTION ANALYSIS</div>
     </div>
   `;
 }
 
 function getFixturesForCompetition(competition, date) {
-  const fixtureList = fixtureDatabase[competition.trim()] || [];
+  const normalized = (competition || 'Premier League').trim();
   const selectedDate = date || new Date().toISOString().slice(0, 10);
+  const fixtureList = fixtureDatabase[normalized] || [];
 
   return fixtureList
     .filter((fixture) => fixture.date === selectedDate)
@@ -308,6 +376,15 @@ function handleSubmit(event) {
   document.getElementById('statusBadge').textContent = fixtures.length ? 'Analysis ready' : 'No fixtures';
 }
 
+function resetForm() {
+  document.getElementById('competition').value = 'Premier League';
+  setDefaultDate();
+  document.getElementById('statusBadge').textContent = 'Ready';
+  const defaults = getFixturesForCompetition('Premier League', document.getElementById('date').value);
+  createSummaryCards('Premier League', document.getElementById('date').value, defaults);
+  document.getElementById('analysisOutput').innerHTML = buildReport('Premier League', document.getElementById('date').value, defaults, document.getElementById('customPrompt').value.trim());
+}
+
 function setDefaultDate() {
   const dateInput = document.getElementById('date');
   const today = new Date();
@@ -321,7 +398,7 @@ function copyReport() {
 
   navigator.clipboard.writeText(text).then(
     () => alert('Report copied to clipboard.'),
-    () => alert('Unable to copy. Select text manually.')
+    () => alert('Unable to copy automatically. Select the report text manually.')
   );
 }
 
@@ -349,4 +426,5 @@ window.addEventListener('DOMContentLoaded', () => {
   document.getElementById('predictionForm').addEventListener('submit', handleSubmit);
   document.getElementById('copyReportBtn').addEventListener('click', copyReport);
   document.getElementById('useExampleBtn').addEventListener('click', useExample);
+  document.getElementById('resetBtn').addEventListener('click', resetForm);
 });
